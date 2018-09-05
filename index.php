@@ -1,3 +1,7 @@
+<?php
+    include './connect.php';
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -7,6 +11,10 @@
     <title>Game Library</title>
 </head>
 <body>
-    
+    <?php
+        if(isset($_SESSION['user_id'])){
+            echo "Hello" . $_SESSION['username'];
+        }
+    ?>
 </body>
 </html>
