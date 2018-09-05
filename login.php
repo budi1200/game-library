@@ -3,16 +3,15 @@
     session_start();
 
     if(isset($_POST['submit'])){
-        $username = mysqli_real_escape_string($conn, trim($_POST['username']));
-        $password = mysqli_real_escape_string($conn, trim($_POST['password']));
+        $username = trim($_POST['username']);
+        $password = trim($_POST['password']);
 
-        $sql = "SELECT password, id FROM users WHERE username= '$username'";
-        $query = mysqli_query($conn, $sql);
-        echo "<br>";
-        while($row = mysqli_fetch_array($query)){
-            $hash = $row["password"];
-            $user_id = $row['id'];
-        }
+        $sql = $conn->prepare("SELECT password, id FROM users WHERE username=?");
+        $sql->execute(array($username)); // insert username and execute
+        $result = $sql->fetch();
+
+        $hash = $result['password'];
+        $user_id = $result['id'];
 
         if(password_verify($password, $hash)){
             echo "password is valid";

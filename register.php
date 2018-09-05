@@ -2,27 +2,29 @@
     include './connect.php';
 
     if(isset($_POST['submit'])){
-        $name = mysqli_real_escape_string($conn, trim($_POST['name']));
-        $username = mysqli_real_escape_string($conn, trim($_POST['username'])); 
-        $email = mysqli_real_escape_string($conn, trim($_POST['email']));
-        $password = mysqli_real_escape_string($conn, trim($_POST['password']));
+        $name = trim($_POST['name']);
+        $username = trim($_POST['username']); 
+        $email = trim($_POST['email']);
+        $password = trim($_POST['password']);
 
-        $sql = "SELECT * FROM users WHERE username='$username'";
-        $result = mysqli_query($conn, $sql);
+        $sql = $conn->prepare("SELECT * FROM users WHERE username=?");
+        $sql->execute(array($username));
+        $result = $sql->fetch();
 
         // Check if username exists and password is less than 6 chars.
-        if(mysqli_fetch_row($result)){
-            echo "username exists";
+        if($result){
+            echo "Username exists";
         }else if(strlen($password) < 6){
-            echo "password too short";
+            echo "Password is too short";
         }
 
-        if(!mysqli_fetch_row($result) && strlen($password) >= 6){
+        if(!$result && strlen($password) >= 6){
             $pass_hash = password_hash($password, PASSWORD_DEFAULT);
-            $sql2 = "INSERT INTO users(name, username, email, password) VALUES ('$name', '$username', '$email', '$pass_hash')";
-            if(mysqli_query($conn, $sql2)){
+            $sql2 = $conn->prepare("INSERT INTO users(name, username, email, password) VALUES (?,?,?,?)");
+            try{
+                $sql2->execute(array($name, $username, $email, $pass_hash));
                 echo "Success";
-            }else{
+            }catch(PDOException $err){
                 echo "Error";
             }
         }
