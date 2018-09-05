@@ -16,6 +16,7 @@
         <label>Title:</label><input type="text" name="title"/>
         <label>Description:</label><input type="text" name="about"/>
         <label>Genre</label><input type="text" name="genre"/>
+        <label>Release year:</label><input type="text" name="release_year"/> <!-- TODO: Modify to accept only year -->
         <label>Developer:</label><input type="text" name="developer"/>
         <label>Website:</label><input type="text" name="website_url"/>
         <button type="submit" name="submit">Add Game</button>
@@ -23,7 +24,22 @@
 
     <?php
         if(isset($_POST['submit'])){
-            
+            $title = $_POST['title'];
+            $about = $_POST['about'];
+            $genre = $_POST['genre'];
+            $release_year = $_POST['release_year'];
+            $developer = $_POST['developer'];
+            $website = $_POST['website_url'];
+            $user_id = $_SESSION['user_id'];
+            $image_id = 0;
+
+            $sql = $conn->prepare("INSERT INTO games(user_id, image_id, title, about, genre, release_year, developer, website_url) VALUES (?,?,?,?,?,?,?,?)");
+            try{
+                $sql->execute(array($user_id, $image_id, $title, $about, $genre, $release_year, $developer, $website));
+                echo "Success";
+            }catch(PDOException $err){
+                echo "Error";
+            }
         }
     ?>
 </body>
