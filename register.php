@@ -23,7 +23,7 @@
             $sql2 = $conn->prepare("INSERT INTO users(name, username, email, password) VALUES (?,?,?,?)");
             try{
                 $sql2->execute(array($name, $username, $email, $pass_hash));
-                echo "Success";
+                header("Location: ./");
             }catch(PDOException $err){
                 echo "Error";
             }
