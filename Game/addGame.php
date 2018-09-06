@@ -36,7 +36,11 @@
             $sql = $conn->prepare("INSERT INTO games(user_id, image_id, title, about, genre, release_year, developer, website_url) VALUES (?,?,?,?,?,?,?,?)");
             try{
                 $sql->execute(array($user_id, $image_id, $title, $about, $genre, $release_year, $developer, $website));
-                echo "Success";
+                
+                $sql2 = $conn->prepare("SELECT id FROM games WHERE user_id=? AND title=?");
+                $sql2->execute(array($user_id, $title));
+                $result = $sql2->fetch();
+                header("Location: ./gameDetails.php?game_id=".$result['id']);
             }catch(PDOException $err){
                 echo "Error";
             }

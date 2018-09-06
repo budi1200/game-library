@@ -12,7 +12,7 @@
             header("Location: ../404.php");
         }
     }else{
-        header("Location: ../404.php");
+        //header("Location: ../404.php");
     }
 
 
@@ -30,9 +30,13 @@
         require("../components/header.php");
         echo $result['title'] . "<br/>";
         echo $result['about'] . "<br/>";
+        echo $result['genre'] . "<br/>";
+        echo $result['release_year'] . "<br/>";
         echo $result['developer'] . "<br/>";
+        echo $result['website_url'] . "<br/>";
 
-        if($_SESSION['user_id'] == $result['user_id']){
+        if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $result['user_id']){
+            echo '<form action="editGame.php" method="post"> <input type="hidden" name="game_id" value="' . $result['id'] . '"/> <button type="submit">Edit Game</button></form>';
             echo '<form action="removeGame.php" method="post"> <input type="hidden" name="id" value="' . $result['id'] . '"/> <button type="submit">Delete Game</button></form>';
         }
     ?>

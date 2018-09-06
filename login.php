@@ -14,9 +14,9 @@
         $user_id = $result['id'];
 
         if(password_verify($password, $hash)){
-            echo "password is valid";
             $_SESSION['user_id'] = $user_id;
             $_SESSION['username'] = $username;
+            header("Location: ./");
         }else{
             echo "Password is invalid";
         }
