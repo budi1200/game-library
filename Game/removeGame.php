@@ -9,6 +9,4 @@
     }catch(PDOException $err){
         echo "Error";
     }
-
-
 ?>

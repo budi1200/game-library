@@ -26,7 +26,7 @@
         $rateString = "Rate";
     }
 
-        // handles user rating the game
+    // handles user rating the game
     if(isset($_POST['rating'])){
         $rating = $_POST['rating'];
         if($rating_result){
@@ -43,6 +43,12 @@
     $sql_avgRating = $conn->prepare("SELECT AVG(rating) AS avgRating FROM ratings WHERE game_id=?");
     $sql_avgRating->execute(array($_GET['game_id']));
     $result_avgRating = $sql_avgRating->fetch();
+
+    // handles comment button
+    if(isset($_POST['text'])){
+        $sql_comment = $conn->prepare("INSERT INTO comments(user_id, game_id, comment) VALUES (?,?,?)");
+        $sql_comment->execute(array($_SESSION['user_id'], $_GET['game_id'], $_POST['text']));
+    }
 
 
 ?>
@@ -69,6 +75,35 @@
         if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $result['user_id']){
             echo '<form action="editGame.php" method="post"> <input type="hidden" name="game_id" value="' . $result['id'] . '"/> <button type="submit">Edit Game</button></form>';
             echo '<form action="removeGame.php" method="post"> <input type="hidden" name="id" value="' . $result['id'] . '"/> <button type="submit">Delete Game</button></form>';
+        }
+
+        // comment section
+        echo '<form action="" method="post">';
+            echo '<textarea name="text"></textarea>';
+            echo '<button type="submit">Comment</button>';
+        echo '</form>';
+
+        $sql_comments = $conn->prepare("SELECT c.comment, c.addedTime, u.username FROM comments c INNER JOIN users u ON u.id=c.user_id WHERE c.game_id=? ORDER BY c.addedTime DESC");
+        $sql_comments->execute(array($_GET['game_id']));
+        $result_comments = $sql_comments->fetchAll();
+
+        foreach($result_comments as $row){
+            echo $row['username'] . "<br/>";
+            echo $row['addedTime'] . "<br/>";
+            echo $row['comment'] . "<br/>";
+            if($_SESSION['username'] == $row['username']){
+                echo '<form action="/game-library/comments/editComment.php" method="post">';
+                    echo '<input type="hidden" name="game_id" value="' . $_GET['game_id'] . '"/>';
+                    echo '<input type="hidden" name="time" value="' . $row['addedTime'] . '"/>';
+                    echo '<button type="submit">Edit Comment</button>';
+                echo '</form>';
+                
+                echo '<form action="/game-library/comments/removeComment.php" method="post">';
+                    echo '<input type="hidden" name="game_id" value="' . $_GET['game_id'] . '"/>';
+                    echo '<input type="hidden" name="time" value="' . $row['addedTime'] . '"/>';
+                    echo '<button type="submit">Delete comment</button>';
+                echo '</form>';
+            }
         }
     ?>
 </body>
