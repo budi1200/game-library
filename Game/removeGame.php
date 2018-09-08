@@ -2,6 +2,7 @@
     require("../connect.php");
     require("../requireLogin.php");
 
+    // TODO: Add owner verification
     $sql = $conn->prepare("DELETE FROM games WHERE id=? AND user_id=?");
     try{
         $sql->execute(array($_POST['id'], $_SESSION['user_id']));
