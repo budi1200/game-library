@@ -6,7 +6,7 @@
     if(isset($_GET['game_id'])){
         $game_id = $_GET['game_id'];
         
-        $sql = $conn->prepare("SELECT g.*, i.url FROM games g INNER JOIN images i ON g.id=i.id WHERE g.id=?");
+        $sql = $conn->prepare("SELECT g.*, i.url FROM games g INNER JOIN images i ON g.image_id=i.id WHERE g.id=?");
         $sql->execute(array($game_id));
         $result = $sql->fetch();
         if(!$result){
@@ -62,25 +62,30 @@
     <?php echo "<title>Game Library | " . $result['title'] . "</title>"; ?>
 </head>
 <body>
-    <?php
+    <?php  
+        // include header
         require("../components/header.php");
+
         echo $result['title'] . "<br/>";
         echo $result['about'] . "<br/>";
         echo $result['genre'] . "<br/>";
         echo $result['release_year'] . "<br/>";
         echo $result['developer'] . "<br/>";
         echo $result['website_url'] . "<br/>";
-        echo $result['url'] . "<br/>";
+        echo '<img src="' . $result['url'] . '"/><br/>';
         echo "Average user rating: " . $result_avgRating['avgRating'] . "<br/>";
+        // if logged in show rate button
         if(isset($_SESSION['user_id'])){
             echo '<form action="" method="post"><label>Rating: </label><input type="number" max=5 min=1 value=3 name="rating"/><br/><button type="submit">'.$rateString.'</button></form>';
         }
+
+        // if owner show edit and delete buttons
         if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $result['user_id']){
             echo '<form action="editGame.php" method="post"> <input type="hidden" name="game_id" value="' . $result['id'] . '"/> <button type="submit">Edit Game</button></form>';
             echo '<form action="removeGame.php" method="post"> <input type="hidden" name="id" value="' . $result['id'] . '"/> <button type="submit">Delete Game</button></form>';
         }
 
-        // comment section
+        // **COMMENT SECTION**
         echo '<form action="" method="post">';
             echo '<textarea name="text"></textarea>';
             echo '<button type="submit">Comment</button>';
