@@ -6,7 +6,7 @@
     if(isset($_GET['game_id'])){
         $game_id = $_GET['game_id'];
         
-        $sql = $conn->prepare("SELECT * FROM games WHERE id=?");
+        $sql = $conn->prepare("SELECT g.*, i.url FROM games g INNER JOIN images i ON g.id=i.id WHERE g.id=?");
         $sql->execute(array($game_id));
         $result = $sql->fetch();
         if(!$result){
@@ -17,15 +17,16 @@
     }
 
     // Checks if user has already rated this game
-    $sql_checkRating = $conn->prepare("SELECT id FROM ratings WHERE user_id=? AND game_id=?");
-    $sql_checkRating->execute(array($_SESSION['user_id'], $result['id']));
-    $rating_result = $sql_checkRating->fetch();
-    if($rating_result){
-        $rateString = "Update Rating";
-    }else{
-        $rateString = "Rate";
+    if(isset($_SESSION['user_id'])){
+        $sql_checkRating = $conn->prepare("SELECT id FROM ratings WHERE user_id=? AND game_id=?");
+        $sql_checkRating->execute(array($_SESSION['user_id'], $result['id']));
+        $rating_result = $sql_checkRating->fetch();
+        if($rating_result){
+            $rateString = "Update Rating";
+        }else{
+            $rateString = "Rate";
+        }
     }
-
     // handles user rating the game
     if(isset($_POST['rating'])){
         $rating = $_POST['rating'];
@@ -69,9 +70,11 @@
         echo $result['release_year'] . "<br/>";
         echo $result['developer'] . "<br/>";
         echo $result['website_url'] . "<br/>";
+        echo $result['url'] . "<br/>";
         echo "Average user rating: " . $result_avgRating['avgRating'] . "<br/>";
-        echo '<form action="" method="post"><label>Rating: </label><input type="number" max=5 min=1 value=3 name="rating"/><br/><button type="submit">'.$rateString.'</button></form>';
-
+        if(isset($_SESSION['user_id'])){
+            echo '<form action="" method="post"><label>Rating: </label><input type="number" max=5 min=1 value=3 name="rating"/><br/><button type="submit">'.$rateString.'</button></form>';
+        }
         if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $result['user_id']){
             echo '<form action="editGame.php" method="post"> <input type="hidden" name="game_id" value="' . $result['id'] . '"/> <button type="submit">Edit Game</button></form>';
             echo '<form action="removeGame.php" method="post"> <input type="hidden" name="id" value="' . $result['id'] . '"/> <button type="submit">Delete Game</button></form>';
@@ -91,7 +94,7 @@
             echo $row['username'] . "<br/>";
             echo $row['addedTime'] . "<br/>";
             echo $row['comment'] . "<br/>";
-            if($_SESSION['username'] == $row['username']){
+            if(isset($_SESSION['user_id']) && $_SESSION['username'] == $row['username']){
                 echo '<form action="/game-library/comments/editComment.php" method="post">';
                     echo '<input type="hidden" name="game_id" value="' . $_GET['game_id'] . '"/>';
                     echo '<input type="hidden" name="time" value="' . $row['addedTime'] . '"/>';
