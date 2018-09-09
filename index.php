@@ -14,9 +14,6 @@
 <body>
     <?php
         require("./components/header.php");
-        if(isset($_SESSION['user_id'])){
-            echo "Hello" . $_SESSION['username'] . "<br/><br/>";
-        }
 
         $result = $conn->query("SELECT * FROM games")->fetchAll();
 

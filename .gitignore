@@ -2,3 +2,5 @@ img/*
 
 !img/def_avatar.svg
 !img/budinewpic336x336.png
+
+/vendor/
