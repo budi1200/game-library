@@ -91,11 +91,12 @@
             echo '<button type="submit">Comment</button>';
         echo '</form>';
 
-        $sql_comments = $conn->prepare("SELECT c.comment, c.addedTime, u.username FROM comments c INNER JOIN users u ON u.id=c.user_id WHERE c.game_id=? ORDER BY c.addedTime DESC");
+        $sql_comments = $conn->prepare("SELECT c.comment, c.addedTime, u.username, i.url FROM comments c INNER JOIN users u ON u.id=c.user_id INNER JOIN images i ON u.image_id=i.id WHERE c.game_id=? ORDER BY c.addedTime DESC");
         $sql_comments->execute(array($_GET['game_id']));
         $result_comments = $sql_comments->fetchAll();
 
         foreach($result_comments as $row){
+            echo '<img height=50 src="' . $row['url'] . '"/>';
             echo $row['username'] . "<br/>";
             echo $row['addedTime'] . "<br/>";
             echo $row['comment'] . "<br/>";
