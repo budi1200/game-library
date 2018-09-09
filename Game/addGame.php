@@ -46,7 +46,7 @@
             $result3 = move_uploaded_file($_FILES['img-file']['tmp_name'], "../img/{$_FILES['img-file']['name']}");
             $sql_img = $conn->prepare("INSERT INTO images(url) VALUES (?)");
             $sql_img->execute(array($name));
-            $img_id = $conn->lastInsertId(); 
+            $img_id = $conn->lastInsertId();
 
             // on successful upload insert game into database
             if($result3){                

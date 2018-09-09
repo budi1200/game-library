@@ -1,7 +1,16 @@
 <?php
     require("../connect.php");
     require("../requireLogin.php");
+
+    // owner verification
+    $sql_verify = $conn->prepare("SELECT user_id FROM comments WHERE game_id=?");
+    $sql_verify->execute(array($_POST['game_id']));
+    $result_verfy = $sql_verify->fetch();
+    if($_SESSION['user_id'] != $result_verfy['user_id']){
+        header("Location: /game-library/");
+    }
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

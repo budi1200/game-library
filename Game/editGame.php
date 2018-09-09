@@ -48,6 +48,7 @@
             $user_id = $_SESSION['user_id'];
             $img_id = $_POST['current_img_id'];
             $id = $_POST['game_id'];
+            $error = false;
 
 
             // Check if a new file was choosen, then delete the old image on disk and database then add new image
@@ -61,6 +62,7 @@
 
                 if($_FILES['new-img']['error'] > 0){
                     echo 'Error uploading image';
+                    $error = true;
                 }else{
                     $extsAllowed = array( 'jpg', 'jpeg', 'png', 'gif' );
                     $extUpload = strtolower( substr( strrchr($_FILES['new-img']['name'], '.') ,1) ) ;
@@ -75,7 +77,7 @@
             }
 
             // Check if image upload had erros and then update game
-            if($_FILES['new-img']['error'] < 1){
+            if(!$error){
                 try{
                     $sql2 = $conn->prepare("UPDATE games SET image_id=?, title=?, about=?, genre=?, release_year=?, developer=?, website_url=? WHERE id=?");
                     $sql2->execute(array($new_img_id, $title, $about, $genre, $release_year, $developer, $website, $id));
