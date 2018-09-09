@@ -57,7 +57,6 @@
                 $result_old_img = $sql_old_img->fetch();
                 $old_img_path =  "../" . substr($result_old_img['url'], 14);
                 unlink(realpath($old_img_path));
-                echo $old_img_path;
                 $conn->prepare("DELETE FROM images WHERE id=?")->execute(array($img_id));
 
                 if($_FILES['new-img']['error'] > 0){
