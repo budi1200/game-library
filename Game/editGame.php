@@ -24,12 +24,12 @@
 <body>
     <?php require('../components/header.php'); ?>
     <form action="" method="post" enctype="multipart/form-data">
-        <label>Title:</label><input type="text" name="title" <?php echo 'value="'.$result['title'].'"'?> />
-        <label>Description:</label><input type="text" name="about" <?php echo 'value="'.$result['about'].'"'?> />
-        <label>Genre</label><input type="text" name="genre" <?php echo 'value="'.$result['genre'].'"'?> />
-        <label>Release year:</label><input type="text" name="release_year" <?php echo 'value="'.$result['release_year'].'"'?> /> <!-- TODO: Modify to accept only year -->
-        <label>Developer:</label><input type="text" name="developer" <?php echo 'value="'.$result['developer'].'"'?> />
-        <label>Website:</label><input type="text" name="website_url" <?php echo 'value="'.$result['website_url'].'"'?> />
+        <label>Title:</label><input type="text" name="title" <?php echo 'value="'.$result['title'].'"'?> required/>
+        <label>Description:</label><input type="text" name="about" <?php echo 'value="'.$result['about'].'"'?> required/>
+        <label>Genre</label><input type="text" name="genre" <?php echo 'value="'.$result['genre'].'"'?> required/>
+        <label>Release year:</label><input type="number" name="release_year" <?php echo 'value="'.$result['release_year'].'"'?> required/>
+        <label>Developer:</label><input type="text" name="developer" <?php echo 'value="'.$result['developer'].'"'?> required/>
+        <label>Website:</label><input type="text" name="website_url" <?php echo 'value="'.$result['website_url'].'"'?> required/>
         <label>Change image:</label><input type="file" name="new-img"/>
         <input type="hidden" name="current_img_id" <?php echo 'value="' . $result['image_id'] . '"'?> />
         <input type="hidden" name="game_id" <?php echo 'value="'.$_POST['game_id'].'"'?> />

@@ -13,13 +13,13 @@
 </head>
 <body>
     <form action="" method="post" enctype="multipart/form-data">
-        <label>Title:</label><input type="text" name="title"/>
-        <label>Description:</label><input type="text" name="about"/>
-        <label>Genre</label><input type="text" name="genre"/>
-        <label>Release year:</label><input type="text" name="release_year"/> <!-- TODO: Modify to accept only year -->
-        <label>Developer:</label><input type="text" name="developer"/>
-        <label>Website:</label><input type="text" name="website_url"/>
-        <label>Poster image:</label><input type="file" name="img-file"/>
+        <label>Title:</label><input type="text" name="title" required/>
+        <label>Description:</label><input type="text" name="about" required/>
+        <label>Genre</label><input type="text" name="genre" required/>
+        <label>Release year:</label><input type="number" name="release_year" required/>
+        <label>Developer:</label><input type="text" name="developer" required/>
+        <label>Website:</label><input type="text" name="website_url" required/>
+        <label>Poster image:</label><input type="file" name="img-file" required/>
         <button type="submit" name="submit">Add Game</button>
     </form>
 
