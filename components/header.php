@@ -9,6 +9,7 @@
         <?php
             if(isset($_SESSION['user_id'])){
                 echo '<a href="/game-library/game/addGame.php">Add Game</a>';
+                echo '<a href="/game-library/user/userProfile.php">Profile</a>';
                 echo '<a href="/game-library/logout.php">Logout</a>';
             }else{
                 echo '<a href="/game-library/login.php">Login</a>';
