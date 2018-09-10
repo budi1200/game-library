@@ -6,6 +6,6 @@
 2. Import sql file
 3. Install Composer
 4. Run 
-'''
+```
     composer install
-'''
+```
