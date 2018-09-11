@@ -11,18 +11,11 @@
     if($_SESSION['user_id'] != $result['user_id']){
         header("Location: /game-library/index.php");
     }
+
+    // include header
+    $title = 'Game Library | Edit Game';
+    require('../components/header.php');
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" type="text/css" href="./css/style.css"/>
-    <title>Edit Game</title>
-</head>
-<body>
-    <?php require('../components/header.php'); ?>
     <form action="" method="post" enctype="multipart/form-data">
         <label>Title:</label><input type="text" name="title" <?php echo 'value="'.$result['title'].'"'?> required/>
         <label>Description:</label><input type="text" name="about" <?php echo 'value="'.$result['about'].'"'?> required/>

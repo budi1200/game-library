@@ -1,5 +1,7 @@
 <?php
     require("./connect.php");
+    
+    $title = "Game Library | Search Results";
     require("./components/header.php");
 
     if(isset($_GET['s'])){
@@ -16,3 +18,5 @@
     }
 
 ?>
+</body>
+</html>

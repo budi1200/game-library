@@ -1,26 +1,18 @@
 <?php
     require("../connect.php");
     require("../requireLogin.php");
-?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>User Profile</title>
-</head>
-<body>
-    <?php
-        require("../components/header.php");
-        require("./userHeader.php");
 
-        // get user data
-        $sql = $conn->prepare("SELECT u.name, u.username, u.email, i.url, i.id AS img_id FROM users u INNER JOIN images i ON u.image_id=i.id WHERE u.id=?");
-        $sql->execute(array($_SESSION['user_id']));
-        $result = $sql->fetch();
+    //include header
+    $title = "Game Library | User Profile";
+    require("../components/header.php");
+    require("./userHeader.php");
 
-        echo '<img height=150 src="' . $result['url'] . '"/><br/>';
+    // get user data
+    $sql = $conn->prepare("SELECT u.name, u.username, u.email, i.url, i.id AS img_id FROM users u INNER JOIN images i ON u.image_id=i.id WHERE u.id=?");
+    $sql->execute(array($_SESSION['user_id']));
+    $result = $sql->fetch();
+    
+    echo '<img height=150 src="' . $result['url'] . '"/><br/>';
     ?>
         <form action="" method="post" enctype="multipart/form-data">
             <label>Change profile image: </label><input type="file" name="new-img"/> <br/>
@@ -31,7 +23,6 @@
         </form>
 
     <?php
-
         // handle submit button
         if(isset($_POST['submit'])){
             $user_name = $_POST['name'];
@@ -78,10 +69,7 @@
                     echo "Error editing profile";
                 }
             }
-
-
         }
-
     ?>
 </body>
 </html>
