@@ -4,6 +4,7 @@
 
     // include header
     $title = "Game Library | Add Game";
+    $add = true;
     require('../components/header.php');
 ?>
 

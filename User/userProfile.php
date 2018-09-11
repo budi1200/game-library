@@ -4,7 +4,9 @@
 
     //include header
     $title = "Game Library | User Profile";
+    $profile = true;
     require("../components/header.php");
+    $userProfile = true;
     require("./userHeader.php");
 
     // get user data

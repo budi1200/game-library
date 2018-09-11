@@ -8,7 +8,9 @@
 
     // include header
     $title = "Game Library | User Comments";
+    $profile = true;
     require("../components/header.php");
+    $userComments = true;
     require("./userHeader.php");
 
     foreach($result as $row){

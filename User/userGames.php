@@ -8,7 +8,9 @@
 
     // include header
     $title = "Game Library | User Games";
+    $profile = true;
     require("../components/header.php");
+    $userGames = true;
     require("./userHeader.php");
 
     foreach($result as $row){
